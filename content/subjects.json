@@ -1,0 +1,7 @@
+[
+  { "id": "ds", "name": "数据结构", "color": "#5B8DEF" },
+  { "id": "py", "name": "Python", "color": "#3DBE8B" },
+  { "id": "en", "name": "英语", "color": "#E0A458" },
+  { "id": "dm", "name": "离散数学", "color": "#C77DFF" },
+  { "id": "net", "name": "计算机网络", "color": "#F07178" }
+]

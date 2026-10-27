@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-27",
+  "summary": "坏数据：重复 id",
+  "topics": [
+    {
+      "id": "t1",
+      "subject": "ds",
+      "title": "t",
+      "selfAssessment": "x",
+      "sources": [{ "label": "x" }],
+      "freeRecallPrompt": "x",
+      "notes": "x",
+      "cards": [
+        {
+          "id": "ds-binary-tree-traversal-001",
+          "type": "qa",
+          "level": "recall",
+          "tier": "core",
+          "status": "ready",
+          "origin": "user-studied",
+          "retired": false,
+          "question": "q",
+          "answer": "a",
+          "estSeconds": 30
+        }
+      ]
+    }
+  ]
+}

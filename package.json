@@ -1,0 +1,32 @@
+{
+  "name": "study-review",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "npm run content && vite",
+    "content": "tsx scripts/build-content.ts",
+    "validate": "tsx scripts/validate-content.ts",
+    "archive:progress": "tsx scripts/archive-progress.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "npm run validate && npm run typecheck && npm run content && vite build",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "dompurify": "^3.2.6",
+    "highlight.js": "^11.11.1",
+    "marked": "^15.0.12"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "jsdom": "^26.1.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vitest": "^3.1.4"
+  }
+}

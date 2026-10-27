@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-26",
+  "summary": "今天主要学习了二叉树三种遍历，递归调用过程还不清楚。",
+  "topics": [
+    {
+      "id": "ds-binary-tree-traversal",
+      "subject": "ds",
+      "title": "二叉树的前序/中序/后序遍历",
+      "selfAssessment": "理解了三种顺序，但递归调用栈的执行过程不清楚",
+      "sources": [{ "label": "当天提供的二叉树遍历学习记录", "locator": "递归部分" }],
+      "freeRecallPrompt": "不看资料，说出三种遍历的访问顺序，并描述递归前序遍历时调用栈如何变化。",
+      "freeRecallEstSeconds": 90,
+      "notesEstSeconds": 60,
+      "notes": "前序：根左右；中序：左根右；后序：左右根。\n\n递归前序：进入节点时访问，再递归左、右；调用栈随递归加深压入帧，返回时弹出。",
+      "cards": [
+        {
+          "id": "ds-binary-tree-traversal-001",
+          "type": "qa",
+          "level": "recall",
+          "tier": "core",
+          "status": "ready",
+          "origin": "user-studied",
+          "retired": false,
+          "question": "前序、中序、后序遍历分别以什么顺序访问根、左、右？",
+          "answer": "前序：根左右；中序：左根右；后序：左右根。",
+          "hint": "名字里的「前中后」指的是根的位置",
+          "estSeconds": 40,
+          "tags": ["二叉树", "遍历"]
+        },
+        {
+          "id": "ds-binary-tree-traversal-002",
+          "type": "code",
+          "level": "apply",
+          "tier": "core",
+          "status": "ready",
+          "origin": "user-studied",
+          "retired": false,
+          "question": "不看资料，用 Python 写出递归前序遍历。",
+          "answer": "```python\ndef preorder(root):\n    if not root:\n        return\n    print(root.val)\n    preorder(root.left)\n    preorder(root.right)\n```",
+          "rubric": ["先处理空节点", "访问当前节点后递归左、右子树"],
+          "estSeconds": 120
+        },
+        {
+          "id": "ds-binary-tree-traversal-003",
+          "type": "explain",
+          "level": "explain",
+          "tier": "general",
+          "status": "ready",
+          "origin": "user-studied",
+          "retired": false,
+          "question": "用自己的话解释：递归遍历时调用栈如何变化？",
+          "answer": "每次进入递归压入栈帧（参数/返回点）；触及基准情况后逐层返回并弹栈。",
+          "rubric": ["提到压栈/弹栈", "提到基准情况"],
+          "estSeconds": 70
+        }
+      ]
+    },
+    {
+      "id": "py-recursion-basics",
+      "subject": "py",
+      "title": "Python 递归基础",
+      "selfAssessment": "会写阶乘，说不清栈帧",
+      "sources": [{ "label": "当天 Python 笔记" }],
+      "freeRecallPrompt": "解释递归的基准情况与递归步骤，并举一个三行以内的例子。",
+      "freeRecallEstSeconds": 80,
+      "notesEstSeconds": 50,
+      "notes": "递归 = 基准情况 + 向基准靠近的递归步骤。",
+      "cards": [
+        {
+          "id": "py-recursion-basics-001",
+          "type": "qa",
+          "level": "recall",
+          "tier": "core",
+          "status": "ready",
+          "origin": "user-studied",
+          "retired": false,
+          "question": "递归函数至少需要哪两类组成部分？",
+          "answer": "基准情况（终止条件）与递归步骤（向基准靠近）。",
+          "estSeconds": 40
+        }
+      ]
+    },
+    {
+      "id": "en-defer-vocab",
+      "subject": "en",
+      "title": "词汇：defer",
+      "selfAssessment": "见过释义，不会造句",
+      "sources": [{ "label": "词汇表", "locator": "defer" }],
+      "freeRecallPrompt": "不看释义，说出 defer 的含义并用在学习场景中造句。",
+      "freeRecallEstSeconds": 60,
+      "notesEstSeconds": 40,
+      "notes": "defer = 推迟；defer doing sth / defer to sb。",
+      "cards": [
+        {
+          "id": "en-defer-001",
+          "type": "cloze",
+          "level": "recall",
+          "tier": "general",
+          "status": "ready",
+          "origin": "user-studied",
+          "retired": false,
+          "question": "Let's {{c1::defer}} the meeting until Friday.",
+          "answer": "defer（推迟）",
+          "estSeconds": 30,
+          "tags": ["vocabulary"]
+        }
+      ]
+    }
+  ],
+  "tempNotes": ["某软件主题切换路径仅存档，不出卡"]
+}

@@ -1,0 +1,14 @@
+node_modules/
+dist/
+public/data/
+*.log
+.DS_Store
+.vite/
+coverage/
+tmp/
+*.local
+.env
+.env.*
+!/.env.example
+原资料/
+.agent/
