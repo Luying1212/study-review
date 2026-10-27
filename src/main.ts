@@ -17,16 +17,18 @@ const app: HTMLDivElement = root;
 let ctx: AppContext | null = null;
 
 async function boot(): Promise<void> {
-  app.innerHTML = `<p class="muted" style="padding:24px">加载中…</p>`;
+  app.innerHTML = `<p class="caption page" style="padding:28px 8px">加载中…</p>`;
   try {
     const [content, progress] = await Promise.all([loadContent(), loadProgressBundle()]);
     ctx = bootContext(content, progress);
     onRoute((route) => render(route));
   } catch (e) {
-    app.innerHTML = `<div class="panel banner danger" style="margin:24px">
-      <h1>无法加载数据</h1>
-      <p>${e instanceof Error ? e.message : String(e)}</p>
-      <p class="muted">请确认已运行 npm run content，且以正确的站点子路径访问。</p>
+    app.innerHTML = `<div class="page stack-lg" style="padding-top:24px">
+      <div class="banner danger">
+        <h1 style="font-size:1.2rem;margin-bottom:8px">无法加载数据</h1>
+        <p>${e instanceof Error ? e.message : String(e)}</p>
+        <p class="caption" style="margin-top:8px">请确认已运行 npm run content，并以正确子路径访问。</p>
+      </div>
     </div>`;
   }
 }

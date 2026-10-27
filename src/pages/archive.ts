@@ -2,7 +2,7 @@ import type { AppContext } from '../app/state';
 import { persist } from '../app/state';
 import { promoteCard } from '../app/session';
 import { subjectName } from '../content/loader';
-import { shell } from './shell';
+import { shell, levelLabel, tierLabel } from './shell';
 import { renderMarkdown, highlightCodeBlocks } from '../utils/markdown';
 
 export function renderArchive(ctx: AppContext): string {
@@ -20,8 +20,8 @@ export function renderArchive(ctx: AppContext): string {
               const cs = ctx.state.cards[c.id];
               const suspended = ctx.state.suspended.includes(c.id);
               const promoted = ctx.state.promoted.includes(c.id);
-              let status = c.status;
-              if (c.retired) status = 'retired' as typeof c.status;
+              let statusLabel = c.status === 'ready' ? '可复习' : c.status;
+              if (c.retired) statusLabel = '已废弃';
               const dueLabel =
                 c.retired || c.status !== 'ready'
                   ? '不出题'
@@ -33,35 +33,43 @@ export function renderArchive(ctx: AppContext): string {
                         ? '一般卡已完成'
                         : '待首次';
               return `<div class="list-item">
-                <div class="row">
-                  <span class="tag">${c.level}</span>
-                  <span class="tag">${c.tier}${promoted ? '+core' : ''}</span>
-                  <span class="muted">${status} · ${dueLabel}</span>
+                <div class="row" style="margin-bottom:8px">
+                  <span class="tag">${levelLabel(c.level)}</span>
+                  <span class="tag ${c.tier === 'core' || promoted ? 'tag-core' : 'tag-general'}">${tierLabel(c.tier)}${promoted ? ' · 已升级' : ''}</span>
+                  <span class="caption">${statusLabel} · ${dueLabel}</span>
                 </div>
-                <div>${c.question}</div>
-                <div class="row" style="margin-top:8px">
+                <div class="cell-title">${c.question}</div>
+                <div class="toolbar" style="margin-top:12px">
                   <button class="btn" data-toggle-suspend="${c.id}">${suspended ? '恢复' : '暂停'}</button>
                   ${c.tier === 'general' && !promoted ? `<button class="btn" data-promote="${c.id}">升级核心</button>` : ''}
                 </div>
               </div>`;
             })
             .join('');
-          return `<div class="panel stack">
-            <h3>${subjectName(ctx.content, t.subject)} · ${t.title}</h3>
-            <div class="notes-box">${renderMarkdown(t.notes)}</div>
-            ${day.tempNotes?.length ? `<p class="muted">临时：${day.tempNotes.join('；')}</p>` : ''}
-            ${cardHtml}
-          </div>`;
+          return `<section>
+            <div class="group-label">${subjectName(ctx.content, t.subject)}</div>
+            <div class="group" style="padding:16px">
+              <h2 style="font-size:1.15rem;margin-bottom:6px">${t.title}</h2>
+              <div class="notes-box" style="margin:12px 0">${renderMarkdown(t.notes)}</div>
+              ${day.tempNotes?.length ? `<p class="caption" style="margin-bottom:8px">临时：${day.tempNotes.join('；')}</p>` : ''}
+              ${cardHtml}
+            </div>
+          </section>`;
         })
         .join('');
-      return `<h2>${day.date}</h2><p class="muted">${day.summary}</p>${topics}`;
+      return `<h2 class="day-heading">${day.date}</h2><p class="caption" style="margin:-4px 0 12px">${day.summary}</p>${topics}`;
     })
     .join('');
 
-  return shell(
-    'archive',
-    `<div class="stack"><h1>学习档案</h1><p class="muted">首版按日期浏览；科目搜索可在试用后补充。</p>${sections || '<p>暂无内容</p>'}</div>`,
-  );
+  const body = `
+    <header class="hero-meta">
+      <p class="caption">学习档案</p>
+      <h1 class="large-title">内容库</h1>
+      <p class="caption">按日期浏览；暂停与升级在此操作</p>
+    </header>
+    ${sections || `<div class="group"><div class="cell"><div class="cell-sub">暂无内容</div></div></div>`}
+  `;
+  return shell('archive', body);
 }
 
 export function bindArchive(ctx: AppContext, rerender: () => void): void {

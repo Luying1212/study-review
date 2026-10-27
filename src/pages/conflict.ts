@@ -8,31 +8,46 @@ import { navigate } from '../router';
 
 export function renderConflict(ctx: AppContext): string {
   if (!ctx.conflict || ctx.conflict.action !== 'conflict') {
-    return shell('settings', `<div class="panel"><p>当前无冲突。</p><a href="#/">返回</a></div>`);
+    return shell(
+      'settings',
+      `<div class="group"><div class="cell"><div class="cell-sub">当前无冲突</div></div></div>
+       <div class="footer-actions"><a class="btn-link" href="#/">返回今晚</a></div>`,
+    );
   }
   const a = ctx.conflict.archive;
   const localLogs = ctx.state.logs.filter((l) => !l.voidedAt).length;
   const archLogs = a.state.logs.filter((l) => !l.voidedAt).length;
   return shell(
     'settings',
-    `<div class="stack">
-      <h1>进度冲突</h1>
+    `<div class="stack-lg">
+      <header class="hero-meta">
+        <p class="caption">冲突处理</p>
+        <h1 class="large-title" style="font-size:1.7rem">选择保留哪一侧</h1>
+      </header>
       <div class="banner danger">${ctx.conflict.reason}</div>
-      <section class="panel">
-        <h3>本地</h3>
-        <p>revision ${ctx.meta.revision} · 有效评分日志 ${localLogs} · 基线 ${ctx.meta.baseArchiveId ?? 'null'}</p>
+      <section>
+        <div class="group-label">两侧摘要</div>
+        <div class="group">
+          <div class="cell">
+            <div class="cell-main">
+              <div class="cell-title">本地</div>
+              <div class="cell-sub">revision ${ctx.meta.revision} · 有效日志 ${localLogs} · 基线 ${ctx.meta.baseArchiveId ?? 'null'}</div>
+            </div>
+          </div>
+          <div class="cell">
+            <div class="cell-main">
+              <div class="cell-title">仓库归档</div>
+              <div class="cell-sub">${a.archiveId} · revision ${a.source.revision} · 有效日志 ${archLogs}</div>
+            </div>
+          </div>
+        </div>
       </section>
-      <section class="panel">
-        <h3>仓库归档</h3>
-        <p>archiveId ${a.archiveId} · revision ${a.source.revision} · 有效评分日志 ${archLogs}</p>
-        <p class="muted">归档时间 ${new Date(a.archivedAt).toLocaleString('zh-CN')}</p>
-      </section>
-      <p>第一版不做逐卡合并。请先导出双方，再明确选择保留哪一侧。</p>
-      <div class="stack">
-        <button class="btn" id="export-local">导出本地侧</button>
-        <button class="btn" id="export-archive">导出仓库侧</button>
-        <button class="btn btn-primary" id="keep-local">保留本地（基线指向当前归档，保留未归档标记）</button>
-        <button class="btn btn-danger" id="keep-archive">采用仓库版本（完整替换）</button>
+      <p class="caption">第一版不做逐卡合并。请先导出双方，再明确选择。</p>
+      <div class="footer-actions">
+        <button class="btn btn-secondary btn-block" id="export-local">导出本地侧</button>
+        <button class="btn btn-secondary btn-block" id="export-archive">导出仓库侧</button>
+        <button class="btn btn-primary" id="keep-local">保留本地</button>
+        <button class="btn btn-danger btn-block" id="keep-archive">采用仓库版本</button>
       </div>
     </div>`,
   );
@@ -72,7 +87,7 @@ export function bindConflict(ctx: AppContext): void {
     navigate('#/');
   });
   document.getElementById('keep-archive')?.addEventListener('click', () => {
-    if (!confirm('采用仓库版本将完整替换本地。已先请导出双方。继续？')) return;
+    if (!confirm('采用仓库版本将完整替换本地。继续？')) return;
     downloadReviewPackage(mkPkg(ctx.state));
     downloadReviewPackage(mkPkg(archive.state));
     const applied = applyArchiveToLocal(archive, ctx.meta, { clearUnarchived: true });

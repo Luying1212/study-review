@@ -17,7 +17,7 @@ import {
 import { subjectName } from '../content/loader';
 import { navigate } from '../router';
 import { highlightCodeBlocks, renderClozeQuestion, renderMarkdown } from '../utils/markdown';
-import { shell } from './shell';
+import { levelLabel, shell, tierLabel } from './shell';
 
 let ui: SessionUiState | null = null;
 let keyHandler: ((e: KeyboardEvent) => void) | null = null;
@@ -58,10 +58,13 @@ export function renderReview(ctx: AppContext): string {
       return renderReview(ctx);
     }
     main = `
-      <div class="panel stack">
-        <div class="row"><span class="tag">自由回忆</span><span class="muted">${subjectName(ctx.content, fr.subject)}</span></div>
-        <h2>${fr.title}</h2>
-        <p>${fr.prompt}</p>
+      <div class="review-card stack">
+        <div class="review-meta">
+          <span class="tag">自由回忆</span>
+          <span class="tag">${subjectName(ctx.content, fr.subject)}</span>
+        </div>
+        <div class="review-question">${fr.title}</div>
+        <p class="muted">${fr.prompt}</p>
         <textarea id="fr-text" rows="5" placeholder="可选：写下回忆要点"></textarea>
         <button class="btn btn-primary" id="fr-done">我回忆完了</button>
       </div>`;
@@ -83,29 +86,33 @@ export function renderReview(ctx: AppContext): string {
         ? renderClozeQuestion(card.question, u.answerRevealed)
         : `<p>${card.question}</p>`;
     const assist = u.usedHint || u.viewedNotesTopics.includes(meta?.topicId ?? '');
+    const questionBody =
+      card.type === 'cloze' ? qHtml : `<div class="review-question">${card.question}</div>`;
     main = `
-      <div class="panel stack">
-        <div class="row">
+      <div class="review-card stack">
+        <div class="review-meta">
           <span class="tag">${subjectName(ctx.content, meta?.subject ?? '')}</span>
-          <span class="tag">${card.level}</span>
-          <span class="tag ${card.tier === 'core' ? 'tag-core' : 'tag-general'}">${card.tier}</span>
-          ${kind === 'retry' ? '<span class="tag">补练（不改变下次日期）</span>' : ''}
+          <span class="tag">${levelLabel(card.level)}</span>
+          <span class="tag ${card.tier === 'core' ? 'tag-core' : 'tag-general'}">${tierLabel(card.tier)}</span>
+          ${kind === 'retry' ? '<span class="tag tag-warn">补练</span>' : ''}
         </div>
-        <h2>${meta?.topicTitle ?? ''}</h2>
-        ${qHtml}
+        <p class="caption">${meta?.topicTitle ?? ''}</p>
+        ${questionBody}
         <textarea id="answer-input" class="${card.type === 'code' ? 'mono' : ''}" rows="4" placeholder="可选作答">${u.typedAnswer}</textarea>
-        <div class="row">
+        <div class="toolbar">
           <button class="btn" id="btn-hint" ${u.usedHint || !card.hint ? 'disabled' : ''}>提示</button>
           <button class="btn" id="btn-peek-notes">先看笔记</button>
           <button class="btn" id="btn-issue">题目有问题</button>
-          ${card.tier === 'general' && !ctx.state.promoted.includes(cardId) ? '<button class="btn" id="btn-promote">⭐ 加入长期复习</button>' : ''}
+          ${card.tier === 'general' && !ctx.state.promoted.includes(cardId) ? '<button class="btn" id="btn-promote">加入长期复习</button>' : ''}
         </div>
-        ${u.usedHint && card.hint ? `<p class="muted">提示：${card.hint}</p>` : ''}
+        ${u.usedHint && card.hint ? `<p class="caption">提示：${card.hint}</p>` : ''}
         ${
           u.answerRevealed
-            ? `<div class="answer-box"><strong>参考答案</strong><div id="answer-md">${renderMarkdown(card.answer)}</div>
-               ${card.rubric ? `<p class="muted">要点：${card.rubric.join('；')}</p>` : ''}
-               ${u.typedAnswer ? `<p><strong>你的回答</strong></p><pre>${escape(u.typedAnswer)}</pre>` : ''}
+            ? `<div class="answer-box reveal">
+                 <p class="caption" style="margin-bottom:8px">参考答案</p>
+                 <div id="answer-md">${renderMarkdown(card.answer)}</div>
+                 ${card.rubric ? `<p class="caption" style="margin-top:10px">要点：${card.rubric.join('；')}</p>` : ''}
+                 ${u.typedAnswer ? `<p class="caption" style="margin-top:12px">你的回答</p><pre>${escape(u.typedAnswer)}</pre>` : ''}
                </div>
                <div class="rating-grid" id="rating-grid">
                  ${[1, 2, 3, 4]
@@ -113,16 +120,16 @@ export function renderReview(ctx: AppContext): string {
                      const labels = ['忘记', '困难', '掌握', '熟练'];
                      const next =
                        kind === 'retry'
-                         ? '不改变下次日期'
+                         ? '不改日期'
                          : nextLabelForRating(ctx.content, ctx.state, cardId, r as 1 | 2 | 3 | 4, assist);
-                     return `<button class="btn rating-btn" data-rating="${r}"><strong>${r} ${labels[r - 1]}</strong><small>下次：${next}</small></button>`;
+                     return `<button class="btn rating-btn" data-rating="${r}"><strong>${labels[r - 1]}</strong><small>下次：${next}</small></button>`;
                    })
                    .join('')}
                </div>`
-            : `<button class="btn btn-primary" id="btn-reveal">查看答案（空格）</button>`
+            : `<button class="btn btn-primary" id="btn-reveal">查看答案</button>`
         }
-        <div class="row">
-          <button class="btn btn-ghost" id="btn-undo" ${u.undoSnapshot ? '' : 'disabled'}>撤销上一次评分</button>
+        <div class="row" style="justify-content:space-between">
+          <button class="btn btn-ghost" id="btn-undo" ${u.undoSnapshot ? '' : 'disabled'}>撤销上一步</button>
           <button class="btn btn-ghost" id="btn-abort">提前结束</button>
         </div>
       </div>`;
@@ -146,28 +153,35 @@ export function renderReview(ctx: AppContext): string {
           }
         }
         if (!topic) return '';
-        return `<div class="panel stack">
-          <h3>${topic.title}</h3>
-          <p class="muted">自评：${topic.selfAssessment}</p>
+        return `<div class="group" style="padding:16px">
+          <h2 style="font-size:1.1rem;margin-bottom:6px">${topic.title}</h2>
+          <p class="caption" style="margin-bottom:12px">自评：${topic.selfAssessment}</p>
           <div class="notes-box" data-notes="${tid}">${renderMarkdown(topic.notes)}</div>
         </div>`;
       })
       .join('');
     main = `
-      <div class="stack">
-        <h2>总结对照</h2>
-        <p class="muted">卡片环节结束后再看笔记，避免先读答案再自评。</p>
-        ${blocks || '<p class="muted">本晚无总结可对照。</p>'}
+      <div class="stack-lg">
+        <header class="hero-meta">
+          <h1 class="large-title" style="font-size:1.6rem">总结对照</h1>
+          <p class="caption">先答完再看笔记，避免先读答案再自评。</p>
+        </header>
+        ${blocks || '<div class="group"><div class="cell"><div class="cell-sub">本晚无总结可对照</div></div></div>'}
         <button class="btn btn-primary" id="btn-finish">进入每日报告</button>
       </div>`;
   } else {
-    main = `<div class="panel stack"><p>会话已结束。</p><a class="btn btn-primary" href="#/report">查看报告</a></div>`;
+    main = `<div class="group stack" style="padding:20px">
+      <p>会话已结束</p>
+      <a class="btn btn-primary" href="#/report" style="display:grid;place-items:center">查看报告</a>
+    </div>`;
   }
 
   const body = `
-    <div class="stack">
-      <div class="progress-bar" aria-label="进度"><span style="width:${pct}%"></span></div>
-      <p class="muted">进度 ${pct}% · 预算 ${ctx.state.settings.budgetMinutes} 分钟</p>
+    <div class="stack-lg">
+      <div>
+        <div class="progress-track" aria-label="进度"><span style="width:${pct}%"></span></div>
+        <p class="caption" style="margin-top:8px">进度 ${pct}% · 预算 ${ctx.state.settings.budgetMinutes} 分钟</p>
+      </div>
       ${main}
     </div>`;
   return shell('tonight', body);
