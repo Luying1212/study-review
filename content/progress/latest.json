@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "appId": "study-review-workbench",
+  "archiveId": "2f8f7fec-2961-47cd-b00f-d75e12a87d3f",
+  "previousArchiveId": null,
+  "exportedAt": "2026-10-27T06:37:04.982Z",
+  "archivedAt": "2026-10-27T06:38:44.807Z",
+  "source": {
+    "deviceId": "f618d1f8-7532-4195-b5c3-b826cb912520",
+    "revision": 8
+  },
+  "state": {
+    "version": 1,
+    "appId": "study-review-workbench",
+    "settings": {
+      "budgetMinutes": 20,
+      "dayStartHour": 4,
+      "timeZone": "Asia/Shanghai"
+    },
+    "cards": {
+      "ds-binary-tree-traversal-001": {
+        "step": 1,
+        "due": "2026-10-28",
+        "firstEligibleOn": "2026-10-27",
+        "reps": 1,
+        "lapses": 1,
+        "lastRating": 1,
+        "lastReviewed": "2026-10-27T06:36:20.582Z",
+        "firstCompletedOn": "2026-10-27"
+      },
+      "ds-binary-tree-traversal-002": {
+        "step": 1,
+        "due": "2026-10-28",
+        "firstEligibleOn": "2026-10-27",
+        "reps": 1,
+        "lapses": 0,
+        "lastRating": 3,
+        "lastReviewed": "2026-10-27T06:36:43.653Z",
+        "firstCompletedOn": "2026-10-27"
+      },
+      "ds-binary-tree-traversal-003": {
+        "step": 0,
+        "due": null,
+        "firstEligibleOn": "2026-10-27",
+        "reps": 1,
+        "lapses": 0,
+        "lastRating": 3,
+        "lastReviewed": "2026-10-27T06:36:44.215Z",
+        "firstCompletedOn": "2026-10-27"
+      },
+      "py-recursion-basics-001": {
+        "step": 1,
+        "due": "2026-10-28",
+        "firstEligibleOn": "2026-10-27",
+        "reps": 1,
+        "lapses": 0,
+        "lastRating": 3,
+        "lastReviewed": "2026-10-27T06:36:43.083Z",
+        "firstCompletedOn": "2026-10-27"
+      },
+      "en-defer-001": {
+        "step": 0,
+        "due": null,
+        "firstEligibleOn": "2026-10-27",
+        "reps": 1,
+        "lapses": 0,
+        "lastRating": 3,
+        "lastReviewed": "2026-10-27T06:36:44.775Z",
+        "firstCompletedOn": "2026-10-27"
+      }
+    },
+    "logs": [
+      {
+        "id": "c683db3c-7d8e-4bf6-b0cb-a4b0cd382cfa",
+        "sessionId": "4b01d373-5e49-40c3-905f-514c87be95e7",
+        "cardId": "ds-binary-tree-traversal-001",
+        "ts": "2026-10-27T06:36:20.582Z",
+        "studyDate": "2026-10-27",
+        "rating": 1,
+        "kind": "scheduled",
+        "usedHint": false,
+        "viewedNotesBeforeAnswer": false,
+        "elapsedMs": 28225
+      },
+      {
+        "id": "cdd4b5e1-21aa-4d72-a465-3c0eeae8d0b6",
+        "sessionId": "4b01d373-5e49-40c3-905f-514c87be95e7",
+        "cardId": "py-recursion-basics-001",
+        "ts": "2026-10-27T06:36:43.083Z",
+        "studyDate": "2026-10-27",
+        "rating": 3,
+        "kind": "scheduled",
+        "usedHint": false,
+        "viewedNotesBeforeAnswer": false,
+        "elapsedMs": 22501
+      },
+      {
+        "id": "6d474203-065e-47e1-bf0f-0eb7e67b7967",
+        "sessionId": "4b01d373-5e49-40c3-905f-514c87be95e7",
+        "cardId": "ds-binary-tree-traversal-002",
+        "ts": "2026-10-27T06:36:43.653Z",
+        "studyDate": "2026-10-27",
+        "rating": 3,
+        "kind": "scheduled",
+        "usedHint": false,
+        "viewedNotesBeforeAnswer": false,
+        "elapsedMs": 570
+      },
+      {
+        "id": "2e40e42c-e38e-4d74-a021-2479a0cf1d4b",
+        "sessionId": "4b01d373-5e49-40c3-905f-514c87be95e7",
+        "cardId": "ds-binary-tree-traversal-003",
+        "ts": "2026-10-27T06:36:44.215Z",
+        "studyDate": "2026-10-27",
+        "rating": 3,
+        "kind": "scheduled",
+        "usedHint": false,
+        "viewedNotesBeforeAnswer": false,
+        "elapsedMs": 562
+      },
+      {
+        "id": "b28c576d-957d-4136-bd19-19d193748947",
+        "sessionId": "4b01d373-5e49-40c3-905f-514c87be95e7",
+        "cardId": "en-defer-001",
+        "ts": "2026-10-27T06:36:44.775Z",
+        "studyDate": "2026-10-27",
+        "rating": 3,
+        "kind": "scheduled",
+        "usedHint": false,
+        "viewedNotesBeforeAnswer": false,
+        "elapsedMs": 560
+      },
+      {
+        "id": "d185ecc8-ac39-4695-8fde-9e60e8465c02",
+        "sessionId": "4b01d373-5e49-40c3-905f-514c87be95e7",
+        "cardId": "ds-binary-tree-traversal-001",
+        "ts": "2026-10-27T06:36:45.333Z",
+        "studyDate": "2026-10-27",
+        "rating": 3,
+        "kind": "retry",
+        "usedHint": false,
+        "viewedNotesBeforeAnswer": false,
+        "elapsedMs": 558
+      }
+    ],
+    "promoted": [],
+    "suspended": [],
+    "issues": [],
+    "dayFeedback": {},
+    "sessions": [
+      {
+        "id": "4b01d373-5e49-40c3-905f-514c87be95e7",
+        "studyDate": "2026-10-27",
+        "startedAt": "2026-10-27T06:36:00.306Z",
+        "endedAt": "2026-10-27T06:36:53.282Z",
+        "activeMs": 52976,
+        "status": "completed",
+        "freeRecall": [],
+        "notesViews": [],
+        "completedCardIds": [
+          "ds-binary-tree-traversal-001",
+          "py-recursion-basics-001",
+          "ds-binary-tree-traversal-002",
+          "ds-binary-tree-traversal-003",
+          "en-defer-001"
+        ]
+      }
+    ]
+  },
+  "reportSummary": {
+    "studyDate": "2026-10-27",
+    "sessionCount": 1,
+    "uniqueCompletedCards": 5,
+    "firstRatingDistribution": {
+      "1": 1,
+      "2": 0,
+      "3": 4,
+      "4": 0
+    },
+    "retryCount": 1,
+    "practiceCount": 0,
+    "activeMs": 60000,
+    "deferredCardCount": 0,
+    "unfinishedFreeRecallCount": 0,
+    "archivedGeneralCount": 0,
+    "smooth": [],
+    "consolidate": [],
+    "relearn": [],
+    "retries": [],
+    "issueCardIds": [],
+    "suspendedCardIds": [],
+    "deferredCardIds": [],
+    "archivedGeneralCardIds": [],
+    "tomorrowDueCoreEstimate": 3,
+    "generalPendingCount": 0
+  }
+}

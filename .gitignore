@@ -12,3 +12,4 @@ tmp/
 !/.env.example
 原资料/
 .agent/
+tmp/

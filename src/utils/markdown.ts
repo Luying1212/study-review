@@ -45,6 +45,13 @@ export function renderClozeQuestion(question: string, revealed: boolean): string
   );
 }
 
+/** 报告等纯文本场景：把挖空标记展成「答案」或下划线 */
+export function plainClozeQuestion(question: string, fillWithAnswer = true): string {
+  return question.replace(/\{\{c\d+::([^}]+)\}\}/g, (_m, ans: string) =>
+    fillWithAnswer ? ans : '____',
+  );
+}
+
 function escapeHtml(s: string): string {
   return s
     .replaceAll('&', '&amp;')

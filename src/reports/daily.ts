@@ -8,6 +8,13 @@ import type {
 } from '../types';
 import { addDays, compareYmd } from '../utils/date';
 import { isGeneralExpired } from '../queue/buildTonightQueue';
+import { plainClozeQuestion } from '../utils/markdown';
+
+function displayQuestion(cardId: string, content: BuiltContent): string {
+  const card = content.cardsById[cardId];
+  if (!card) return cardId;
+  return card.type === 'cloze' ? plainClozeQuestion(card.question, true) : card.question;
+}
 
 function activeLogs(logs: ReviewLog[]): ReviewLog[] {
   return logs.filter((l) => !l.voidedAt);
@@ -59,7 +66,7 @@ function itemFromLog(
     topicId: meta?.topicId ?? 'unknown',
     topicTitle: meta?.topicTitle ?? '未知知识点',
     level: card?.level ?? 'recall',
-    question: card?.question ?? log.cardId,
+    question: displayQuestion(log.cardId, content),
     rating: log.rating,
     usedHint: log.usedHint,
     viewedNotesBeforeAnswer: log.viewedNotesBeforeAnswer,
@@ -112,7 +119,7 @@ export function buildDailyReport(input: {
         topicId: meta?.topicId ?? 'unknown',
         topicTitle: meta?.topicTitle ?? '未知知识点',
         level: card?.level ?? 'recall',
-        question: card?.question ?? cardId,
+        question: displayQuestion(cardId, content),
         rating: 1,
         usedHint: false,
         viewedNotesBeforeAnswer: false,
@@ -126,7 +133,7 @@ export function buildDailyReport(input: {
     .map((l) => ({
       cardId: l.cardId,
       rating: l.rating,
-      question: content.cardsById[l.cardId]?.question ?? l.cardId,
+      question: displayQuestion(l.cardId, content),
     }));
 
   const practiceCount = dayLogs.filter((l) => l.kind === 'practice').length;
