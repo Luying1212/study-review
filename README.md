@@ -43,9 +43,10 @@ Push 到 `main` 后，GitHub Actions 运行测试与构建并部署 GitHub Pages
 
 | 检查 | 状态 |
 |---|---|
-| 本地 `npm test` / `npm run build` | 以实现后实测为准 |
-| 浏览器完整复习流程 | 待在隔离配置中手工走通 |
-| GitHub Pages 线上访问 | **待办**：需创建远程仓库并启用 Pages |
+| 本地 `npm test` / `npm run build` | 通过 |
+| 浏览器完整复习流程（M4） | 通过（线上隔离会话） |
+| 导出 / 导入 / 归档恢复（M5） | 通过；公开快照已脱敏 |
+| GitHub Pages | https://luying1212.github.io/study-review/ |
 | M7 真实使用 7～14 天 | 待真实使用验证 |
 
 ## 每日使用
